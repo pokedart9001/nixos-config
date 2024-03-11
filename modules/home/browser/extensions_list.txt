@@ -1,0 +1,7 @@
+1Password
+ClearURLs
+i still don't care about cookies
+Return YouTube Dislike
+SponsorBlock
+Stylus                          # import file import.json
+uBlock Origin                   # + filter for shorts
