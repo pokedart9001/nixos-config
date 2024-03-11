@@ -1,0 +1,3 @@
+{
+    services.hyprlauncher.enable = true;
+}
