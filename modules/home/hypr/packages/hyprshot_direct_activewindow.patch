@@ -1,0 +1,70 @@
+diff --git a/hyprshot b/hyprshot
+index 6a5293c..79989f6 100755
+--- a/hyprshot
++++ b/hyprshot
+@@ -129,6 +129,30 @@ function save_geometry() {
+     send_notification $output
+ }
+ 
++function save_window() {
++    local window="${1}"
++    local output=""
++
++    if [ $RAW -eq 1 ]; then
++        grim -w "${window}" -
++        return 0
++    fi
++
++    if [ $CLIPBOARD -eq 0 ]; then
++        mkdir -p "$SAVEDIR"
++        grim -w "${window}" "$SAVE_FULLPATH"
++        output="$SAVE_FULLPATH"
++        wl-copy --type image/png < "$output"
++        [ -z "$COMMAND" ] || {
++            "$COMMAND" "$output"
++        }
++    else
++        wl-copy --type image/png < <(grim -w "${window}" -)
++    fi
++
++    send_notification $output
++}
++
+ function checkRunning() {
+     sleep 1
+     while [[ 1 == 1 ]]; do
+@@ -161,14 +185,18 @@ function begin_grab() {
+             ;;
+         window)
+             if [ $CURRENT -eq 1 ]; then
+-                local geometry=`grab_active_window`
++                local window=`grab_active_window`
+             else
+                 local geometry=`grab_window`
+             fi
+ 	    geometry=`trim "${geometry}"`
+             ;;
+     esac
+-    save_geometry "${geometry}"
++    if [ -v window ]; then
++        save_window "${window}"
++    elif [ -v geometry ]; then
++        save_geometry "${geometry}"
++    fi
+ }
+ 
+ function grab_output() {
+@@ -208,10 +236,9 @@ function grab_window() {
+ }
+ 
+ function grab_active_window() {
+-    local active_window=`hyprctl -j activewindow`
+-    local box=$(echo $active_window | jq -r '"\(.at[0]),\(.at[1]) \(.size[0])x\(.size[1])"' | cut -f1,2 -d' ')
+-    Print "Box:\n%s\n" "$box"
+-    echo "$box"
++    local address=$(hyprctl activewindow -j | jq -r '.address')
++    Print "Address:\n%s\n" "$address"
++    echo "$address"
+ }
+ 
+ function parse_mode() {
