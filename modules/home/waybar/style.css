@@ -1,0 +1,163 @@
+@import "catppuccin.css";
+
+* {
+    /* `otf-font-awesome` is required to be installed for icons */
+    font-family: Inter, SymbolsNerdFont, sans-serif;
+    font-size: 12.5px;
+    color: @text;
+}
+
+window#waybar {
+    background-color: transparent;
+}
+
+window#waybar.hidden {
+    opacity: 0.2;
+}
+
+.module {
+    border: solid;
+    border-width: 1px;
+    border-color: @surface0;
+    border-radius: 20px;
+    margin-left: 2px;
+    margin-right: 2px;
+    background-color: @mantle;
+}
+
+#window {
+    margin: 0 4px;
+    padding: 0 8px;
+}
+
+window#waybar.empty #window {
+    border: none;
+    background-color: transparent;
+}
+
+#custom-launcher {
+    color: @blue;
+    font-size: 20px;
+    margin-left: 4px;
+    margin-right: 0;
+    padding: 2px 5px 0 5px;
+}
+
+#workspaces {
+    margin-left: 4px;
+    padding: 0 2px;
+}
+
+#workspaces button {
+    padding: 0 2px;
+}
+
+#workspaces button:hover {
+    box-shadow: inherit;
+    text-shadow: inherit;
+}
+
+#workspaces button:nth-child(n + 3) {
+    padding-right: 0;
+}
+
+#workspaces button:nth-child(n + 5) {
+    padding-left: 0;
+}
+
+#workspaces button label {
+    color: shade(@blue, 1.1);
+    font-size: 13px;
+}
+
+#workspaces button.active label {
+    color: shade(@pink, 0.95);
+}
+
+#idle_inhibitor,
+#custom-notification {
+    font-size: 16px;
+    padding: 1px 6px 0 6px;
+}
+
+#idle_inhibitor {
+    color: shade(@rosewater, 0.9);
+}
+
+#custom-notification {
+    color: shade(@flamingo, 0.8);
+}
+
+#tray,
+#custom-weather,
+#cpu,
+#disk,
+#pulseaudio,
+#network,
+#clock {
+    padding: 0 8px;
+}
+
+#cpu {
+    border-right: none;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    padding-right: 5px;
+    margin-right: 0;
+    color: @peach;
+}
+
+#memory {
+    border-left: none;
+    border-right: none;
+    border-radius: 0;
+    padding-left: 5px;
+    margin-left: 0;
+    padding-right: 5px;
+    margin-right: 0;
+    color: @yellow;
+}
+
+#disk {
+    border-left: none;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    padding-left: 5px;
+    margin-left: 0;
+    color: @green;
+}
+
+#pulseaudio {
+    color: @teal;
+}
+
+#network {
+    color: @sapphire;
+}
+
+#clock {
+    color: @mauve;
+}
+
+#custom-power {
+    color: shade(@red, 0.9);
+    font-size: 16px;
+    margin-right: 4px;
+    padding: 1px 6px 0 6px;
+}
+
+label:focus {
+    background-color: #000000;
+}
+
+#custom-media {
+    min-width: 100px;
+}
+
+#tray > .passive {
+    -gtk-icon-effect: dim;
+}
+
+#tray > .needs-attention {
+    -gtk-icon-effect: highlight;
+}
