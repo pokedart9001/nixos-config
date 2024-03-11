@@ -1,0 +1,6 @@
+uBlock Origin                   # + filter for shorts
+Return YouTube Dislike
+Stylus                          # import file import.json
+Firefox Color                   # catppuccin
+I STILL don't care about cookies
+ClearURLs
