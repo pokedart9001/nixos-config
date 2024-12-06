@@ -1,0 +1,195 @@
+@import "catppuccin.css";
+
+* {
+    /* `otf-font-awesome` is required to be installed for icons */
+    font-family: JetBrainsMonoNerdFont, sans-serif;
+    font-size: 13px;
+    color: @text;
+}
+
+window#waybar {
+    background-color: transparent;
+}
+
+window#waybar.hidden {
+    opacity: 0.2;
+}
+
+.module {
+    border: solid;
+    border-width: 1.3px;
+    border-color: @blue;
+    border-radius: 20px;
+    margin-left: 2px;
+    margin-right: 2px;
+    background-color: @mantle;
+}
+
+#clock,
+#battery,
+#cpu,
+#memory,
+#disk,
+#temperature,
+#backlight,
+#network,
+#pulseaudio,
+#custom-media,
+#tray,
+#window {
+    padding: 0 10px;
+}
+
+#window {
+    margin: 0 4px;
+}
+/*
+#window label {
+    font-size: 12px;
+}
+*/
+window#waybar.empty #window {
+    border: none;
+    background-color: transparent;
+}
+
+#custom-launcher {
+    color: @blue;
+    font-size: 21px;
+    margin-left: 4px;
+    margin-right: 0;
+    padding: 0 10px 0 6px;
+}
+
+#workspaces {
+    margin-left: 4px;
+    padding: 0 7px 0 5px;
+}
+
+#workspaces button {
+    padding: 0 6px;
+}
+
+#workspaces button:hover {
+    box-shadow: inherit;
+    text-shadow: inherit;
+}
+
+#workspaces button:nth-child(3) {
+    padding-left: 7px;
+    padding-right: 5px;
+}
+
+#workspaces button:nth-child(n + 5) {
+    padding-right: 3px;
+}
+
+#workspaces button label {
+    color: shade(@blue, 1.1);
+}
+
+#workspaces button.active label {
+    color: shade(@pink, 0.95);
+}
+
+#tray {
+    padding-left: 12px;
+}
+
+#idle_inhibitor {
+    color: shade(@rosewater, 0.9);
+    font-size: 16px;
+    padding: 0 14px 0 8px;
+}
+
+#idle_inhibitor.deactivated {
+    padding: 0 15px 0 7px;
+}
+
+#custom-notification {
+    color: shade(@flamingo, 0.8);
+    font-size: 16px;
+    padding: 0 11px 0 8px;
+}
+
+#custom-notification.notification,
+#custom-notification.inhibited-notification {
+    padding-right: 5px;
+}
+
+#custom-notification.dnd-none,
+#custom-notification.dnd-inhibited-none {
+    padding-right: 17px;
+}
+
+#cpu {
+    border-right: none;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    padding-right: 5px;
+    margin-right: 0;
+    color: @peach;
+}
+
+#memory {
+    border-left: none;
+    border-right: none;
+    border-radius: 0;
+    padding-left: 5px;
+    margin-left: 0;
+    padding-right: 5px;
+    margin-right: 0;
+    color: @yellow;
+}
+
+#disk {
+    border-left: none;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    padding-left: 5px;
+    margin-left: 0;
+    color: @green;
+}
+
+#battery.warning {
+    color: @yellow;
+}
+
+#battery.critical {
+    color: @red;
+}
+
+#pulseaudio {
+    color: @teal;
+}
+
+#network {
+    color: @sapphire;
+}
+
+#clock {
+    color: @mauve;
+}
+
+#custom-power {
+    color: shade(@red, 0.9);
+    font-size: 17px;
+    margin-right: 4px;
+    padding: 0 11px 0 8px;
+}
+
+label:focus {
+    background-color: #000000;
+}
+
+#custom-media {
+    min-width: 100px;
+}
+
+#tray > .passive {
+    -gtk-icon-effect: dim;
+}
+
+#tray > .needs-attention {
+    -gtk-icon-effect: highlight;
+}

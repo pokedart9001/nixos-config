@@ -1,9 +1,8 @@
 {
   self,
   pkgs,
-  lib,
   inputs,
-  unstable-overlay,
+  system,
   ...
 }: {
   # imports = [ inputs.nix-gaming.nixosModules.default ];
@@ -13,18 +12,22 @@
       experimental-features = ["nix-command" "flakes"];
       substituters = [
         "https://nix-gaming.cachix.org"
+        "https://hyprland.cachix.org"
       ];
       trusted-public-keys = [
         "nix-gaming.cachix.org-1:nbjlureqMbRAxR1gJ/f3hxemL9svXaZF/Ees8vCUUs4="
+        "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="
       ];
     };
   };
 
   nixpkgs = {
+    inherit system;
     config.allowUnfree = true;
     overlays = [
-      inputs.nur.overlay
-      unstable-overlay
+      inputs.nur.overlays.default
+      inputs.qtile.overlays.default
+      inputs.grim-hyprland.overlays.default
     ];
   };
 
@@ -63,5 +66,6 @@
   time.timeZone = "America/New_York";
   time.hardwareClockInLocalTime = true;
   i18n.defaultLocale = "en_US.UTF-8";
+  i18n.extraLocaleSettings.LC_TIME = "en_US.UTF-8";
   system.stateVersion = "23.11";
 }

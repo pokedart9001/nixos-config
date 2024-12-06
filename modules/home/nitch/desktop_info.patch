@@ -103,4 +103,4 @@ index 0000000..3d3224e
 +  std/os
 +
 +func getDesktop*(): string =
-+  result = getEnv("XDG_CURRENT_DESKTOP")
++  result = getEnv("DESKTOP_SESSION")
