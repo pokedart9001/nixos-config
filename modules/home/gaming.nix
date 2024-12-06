@@ -1,7 +1,7 @@
 {
   pkgs,
-  config,
-  inputs,
+  username,
+  system,
   ...
 }: {
   home.packages = with pkgs; [
@@ -27,8 +27,30 @@
     gzdoom
     crispy-doom
 
+    ## Osu!
+    (osu-lazer-bin.override {
+      appimageTools =
+        appimageTools
+        // {
+          wrapType2 = args:
+            appimageTools.wrapType2 (args
+              // rec {
+                version = "latest";
+                src = fetchurl {
+                  url = "https://github.com/ppy/osu/releases/${version}/download/osu.AppImage";
+                  hash = "sha256-348B6gtYLRTGlyCNsWiOrqg98bF/cPIsPBroisApzfc=";
+                };
+              });
+        };
+    })
+
     ## Emulation
-    # cemu
-    # dolphin-emu
+    duckstation
+    pcsx2
   ];
+
+  slippi-launcher = {
+    isoPath = "/home/${username}/ROMs/GCN/Super Smash Bros. Melee (v1.02).iso";
+    launchMeleeOnPlay = true;
+  };
 }

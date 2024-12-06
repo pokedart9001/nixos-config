@@ -1,8 +1,4 @@
-{
-  pkgs,
-  username,
-  ...
-}: {
+{pkgs, ...}: {
   home.packages = with pkgs; [famistudio];
 
   xdg.desktopEntries.famistudio = {
@@ -14,7 +10,7 @@
       sha256 = "sha256:020n10vp1i9n62cxy7dkbrd5z9a15yql8sf7hvzr4xclw7r7gj9a";
     };
 
-    exec = "famistudio";
+    exec = "FamiStudio";
     terminal = false;
     categories = ["AudioVideo" "Audio"];
   };

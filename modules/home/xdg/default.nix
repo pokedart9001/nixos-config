@@ -17,4 +17,5 @@
   };
 
   home.file."Pictures/wallpapers".source = ./wallpapers;
+  home.file.".face.icon".source = ./face.icon;
 }

@@ -1,10 +1,4 @@
-{
-  hostname,
-  config,
-  pkgs,
-  flakeDir,
-  ...
-}: {
+{config, ...}: {
   programs.zsh = {
     enable = true;
     enableCompletion = true;
@@ -39,9 +33,9 @@
       tree = "eza --icons --tree --group-directories-first";
 
       # Nixos
-      cdnix = "cd ${flakeDir}";
-      nix-edit = "codium ${flakeDir}";
-      nix-flake-update = "sudo nix flake update ${flakeDir}#";
+      cdnix = "cd ~/nixos-config";
+      nix-edit = "codium ~/nixos-config";
+      nix-flake-update = "sudo nix flake update --flake ~/nixos-config#";
 
       # Git
       ga = "git add";
