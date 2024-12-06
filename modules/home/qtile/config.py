@@ -52,9 +52,9 @@ class BspSmart(layout.Bsp):
 def autostart():
     qtile.spawn('startup')
 
-@hook.subscribe.suspend
+@hook.subscribe.resume
 def autolock():
-    qtile.spawn('lockscreen')
+    qtile.spawn('loginctl kill-user $(whoami)', shell=True)
 
 mod = 'mod4'
 alt = 'mod1'
@@ -65,7 +65,8 @@ browser = 'floorp'
 files = 'nemo'
 
 keys = [
-    # A list of available commands that can be bound to keys can be found
+    # A list of available commands that caNintendo3ds.andKnuckles
+    # n be bound to keys can be found
     # at https://docs.qtile.org/en/latest/manual/config/lazy.html
     
     # Switch between windows
@@ -126,8 +127,9 @@ keys = [
 
     Key([mod, 'control'], 'r', lazy.reload_config(), desc='Reload the config'),
     Key([mod, 'control'], 'i', lazy.spawn('snixembed --fork'), desc='Reload systray icons'),
-    Key([mod, 'control'], 'l', lazy.spawn('lockscreen'), desc='Activate lockscreen'),
+    Key([mod, 'control'], 'l', lazy.spawn('loginctl kill-user $(whoami)', shell=True), desc='Activate lockscreen'),
     Key([mod, 'control'], 'q', lazy.shutdown(), desc='Shutdown Qtile'),
+    Key([mod, 'control'], 'Escape', lazy.restart(), desc='Restart Qtile'),
     
     Key([mod], 'r', lazy.spawn('launcher'), desc='Open an application using rofi'),
     Key([mod, 'shift'], 'r', lazy.spawn('runner'), desc='Run a command using rofi'),
@@ -153,7 +155,7 @@ layouts = [
 ]
 
 group_opts = [
-    { 'name': '1', 'label' : '󰆍', 'spawn': f'{terminal} --hold nitch' },
+    { 'name': '1', 'label' : '󰆍', 'spawn': [f'{terminal} --hold nitch', 'codium /home/nlevitt/nixos-config'], 'matches': [Match(wm_class='vscodium')] },
     { 'name': '2', 'label' : '󰙯', 'spawn': discord, 'matches': [Match(wm_class='vesktop')] },
     { 'name': '3', 'label' : '󰈹', 'spawn': browser, 'matches': [Match(wm_class='floorp')], 'layout': 'max', 'layout_opts': layout_opts },
     { 'name': '4', 'label' : '󰓓', 'spawn': 'steam', 'matches': [Match(title='Steam')] },

@@ -6,7 +6,11 @@
     blueman.enable = true;
 
     libinput.enable = true;
-    displayManager.defaultSession = "none+qtile";
+    udev.packages = with pkgs; [
+      via
+    ];
+
+    displayManager.defaultSession = "qtile";
 
     picom = {
       enable = true;

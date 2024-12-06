@@ -2,7 +2,7 @@
   pkgs,
   inputs,
   username,
-  flakeDir,
+  description,
   ...
 }: let
   packages = with pkgs; [
@@ -14,7 +14,7 @@ in {
   home-manager = {
     useUserPackages = true;
     useGlobalPkgs = true;
-    extraSpecialArgs = {inherit inputs username flakeDir;};
+    extraSpecialArgs = {inherit inputs username;};
     users.${username} = {
       imports = [
         (import ./../home)
@@ -29,7 +29,7 @@ in {
 
   users.users.${username} = {
     isNormalUser = true;
-    description = "${username}";
+    description = "${description}";
     extraGroups = ["networkmanager" "wheel"];
     shell = pkgs.zsh;
   };

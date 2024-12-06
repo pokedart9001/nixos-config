@@ -9,6 +9,7 @@ in {
   services.xserver = {
     enable = true;
     xkb.layout = "us";
+    xkb.options = "ctrl:nocaps";
 
     videoDrivers = ["nvidia"];
 
