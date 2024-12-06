@@ -1,10 +1,13 @@
 #!/usr/bin/env bash
 
 # cd to config dir
-pushd $FLAKE
+pushd ~/nixos-config
 
 # Autoformat nix files
-alejandra . >/dev/null
+if !(alejandra . >/dev/null); then
+    pushd
+    exit 1
+fi
 
 # Stage nix files for rebuild
 # (will not track properly otherwise)
@@ -22,7 +25,7 @@ if nh os switch . $1; then
     current=$(nixos-rebuild list-generations | grep current)
 
     # Commit all changes with the generation metadata
-    git commit -am "$current"
+    git commit --fixup current -am "$current"
 else
     # Notify failure
     notify-send -e "NixOS Rebuid Failed." --icon=dialog-error
