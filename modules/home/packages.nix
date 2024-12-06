@@ -4,7 +4,6 @@
   ...
 }: {
   home.packages = with pkgs; [
-    _1password-gui
     ani-cli # cli tool for scraping and watching anime
     aria2 # download manager
     bitwise # cli tool for bit / hex manipulation
@@ -13,20 +12,23 @@
     entr # perform action when file change
     file # Show file information
     furnace # multi-system chiptune tracker
+    gimp
     jdk17 # java
     libreoffice
+    nemo-with-extensions # file manager
     nix-prefetch-github
     pipx # Install Python applications in isolated environments
     prismlauncher # minecraft launcher
     ripgrep # grep replacement
     soundwireserver # pass audio to android phone
-    tgpt
     todo # cli todo list
     toipe # typing test in the terminal
-    cinnamon.nemo-with-extensions # file manager
+    ventoy
+    via
     yazi # terminal file manager
+    yt-dlp
     ytfzf # cli tool for scraping and watching youtube
-    gnome.zenity
+    zenity
 
     # C / C++
     gcc
@@ -34,13 +36,15 @@
 
     alejandra
     bleachbit # cache cleaner
+    cifs-utils
     cmatrix
-    diskonaut
+    dust
     escrotum # cli screenshot utility
     exfat
-    gnome.gnome-disk-utility # partition manager
+    gnome-disk-utility # partition manager
     ffmpeg
     imv # image viewer
+    inetutils
     jq
     libnotify
     man-pages # extra man pages

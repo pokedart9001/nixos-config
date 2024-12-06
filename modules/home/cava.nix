@@ -1,10 +1,3 @@
 {
-  inputs,
-  pkgs,
-  ...
-}: {
-  programs.cava = {
-    enable = true;
-    catppuccin.enable = true;
-  };
+  programs.cava.enable = true;
 }

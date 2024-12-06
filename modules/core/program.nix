@@ -1,9 +1,13 @@
 {
   pkgs,
   username,
-  flakeDir,
   ...
 }: {
+  programs.appimage = {
+    enable = true;
+    binfmt = true;
+  };
+
   programs.dconf.enable = true;
   programs.zsh.enable = true;
 
@@ -11,6 +15,20 @@
     enable = true;
     enableSSHSupport = true;
     # pinentryFlavor = "";
+  };
+
+  programs._1password.enable = true;
+  programs._1password-gui = {
+    enable = true;
+    polkitPolicyOwners = [username];
+  };
+  environment.etc = {
+    "1password/custom_allowed_browsers" = {
+      text = ''
+        floorp
+      '';
+      mode = "0755";
+    };
   };
 
   programs.i3lock = {
@@ -21,7 +39,6 @@
   programs.nh = {
     enable = true;
     clean.enable = true;
-    flake = /. + builtins.toPath flakeDir;
   };
 
   programs.noisetorch.enable = true;

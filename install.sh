@@ -28,9 +28,16 @@ print_header() {
 
 set_username() {
     CURRENT_USERNAME=$(grep "username =" ./flake.nix | cut -d \" -f 2)
+    NEW_USERNAME=$(whoami)
 
-    echo -e "Setting username to \"$(whoami)...\"\n"
-    sed -i "s/${CURRENT_USERNAME}/$(whoami)/g" ./flake.nix
+    echo -e "Setting username to \"$NEW_USERNAME...\"\n"
+    sed -i "s/${CURRENT_USERNAME}/$NEW_USERNAME/g" ./flake.nix
+
+    CURRENT_DESCRIPTION=$(grep "description =" ./flake.nix | cut -d \" -f 2)
+    NEW_DESCRIPTION=$(cat /etc/passwd | grep $(whoami) | awk -F ':' '{print $5}')
+
+    echo -e "Setting description to \"$NEW_DESCRIPTION...\"\n"
+    sed -i "s/${CURRENT_USERNAME}/$NEW_DESCRIPTION/g" ./flake.nix
 }
 
 set_github_username_and_email() {
