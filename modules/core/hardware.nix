@@ -5,10 +5,8 @@
   ...
 }: {
   hardware = {
-    opengl = {
+    graphics = {
       enable = true;
-      driSupport = true;
-      driSupport32Bit = true;
 
       extraPackages = with pkgs; [
         nvidia-vaapi-driver
@@ -16,10 +14,10 @@
     };
 
     nvidia = {
-      open = false;
+      open = true;
 
       modesetting.enable = true;
-      powerManagement.enable = false;
+      powerManagement.enable = true;
 
       nvidiaSettings = true;
       nvidiaPersistenced = true;

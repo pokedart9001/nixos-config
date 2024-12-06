@@ -1,7 +1,6 @@
 {
   pkgs,
   username,
-  flakeDir,
   ...
 }: {
   programs.dconf.enable = true;
@@ -21,7 +20,6 @@
   programs.nh = {
     enable = true;
     clean.enable = true;
-    flake = /. + builtins.toPath flakeDir;
   };
 
   programs.noisetorch.enable = true;

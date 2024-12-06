@@ -2,6 +2,7 @@
   pkgs,
   inputs,
   username,
+  description,
   flakeDir,
   ...
 }: let
@@ -29,7 +30,7 @@ in {
 
   users.users.${username} = {
     isNormalUser = true;
-    description = "${username}";
+    description = "${description}";
     extraGroups = ["networkmanager" "wheel"];
     shell = pkgs.zsh;
   };
