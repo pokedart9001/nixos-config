@@ -1,6 +1,6 @@
 {pkgs, ...}: {
   home.packages = with pkgs; [
-    unstable.tidal-hifi
+    tidal-hifi
   ];
 
   xdg.configFile."tidal-hifi/themes/rosepine.css".source = builtins.fetchurl {

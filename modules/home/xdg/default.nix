@@ -1,20 +1,22 @@
-{config, ...}: {
-  xdg.enable = true;
-
-  xdg.mime.enable = true;
-  xdg.mimeApps = {
+{
+  xdg = {
     enable = true;
-    defaultApplications = {
-      "inode/directory" = ["nemo.desktop"];
+
+    mimeApps = {
+      enable = true;
+      defaultApplications = {
+        "inode/directory" = ["nemo.desktop"];
+      };
+    };
+
+    userDirs = {
+      createDirectories = true;
+
+      publicShare = null;
+      templates = null;
     };
   };
 
-  xdg.userDirs = {
-    createDirectories = true;
-
-    publicShare = null;
-    templates = null;
-  };
-
   home.file."Pictures/wallpapers".source = ./wallpapers;
+  home.file.".face.icon".source = ./face.icon;
 }

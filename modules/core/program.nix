@@ -1,17 +1,52 @@
 {
   pkgs,
   username,
-  flakeDir,
   ...
 }: {
+  programs.appimage = {
+    enable = true;
+    binfmt = true;
+  };
+
+  programs.nix-ld = {
+    enable = true;
+    libraries = with pkgs; [
+      libcxx
+      libglvnd
+      libpulseaudio
+      libvlc
+      xorg.libXi
+      SDL2
+    ];
+  };
+
   programs.dconf.enable = true;
   programs.zsh.enable = true;
+  programs.arp-scan.enable = true;
 
   programs.gnupg.agent = {
     enable = true;
     enableSSHSupport = true;
     # pinentryFlavor = "";
   };
+
+  programs.seahorse.enable = true;
+
+  programs._1password.enable = true;
+  programs._1password-gui = {
+    enable = true;
+    polkitPolicyOwners = [username];
+  };
+  environment.etc = {
+    "1password/custom_allowed_browsers" = {
+      text = ''
+        floorp
+      '';
+      mode = "0755";
+    };
+  };
+
+  programs.hyprland.enable = true;
 
   programs.i3lock = {
     enable = true;
@@ -21,8 +56,7 @@
   programs.nh = {
     enable = true;
     clean.enable = true;
-    flake = /. + builtins.toPath flakeDir;
   };
 
-  programs.noisetorch.enable = true;
+  programs.wshowkeys.enable = true;
 }
