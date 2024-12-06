@@ -1,7 +1,6 @@
 {
   pkgs,
-  config,
-  inputs,
+  username,
   ...
 }: {
   home.packages = with pkgs; [
@@ -27,8 +26,16 @@
     gzdoom
     crispy-doom
 
+    ## Osu!
+    unstable.osu-lazer-bin
+
     ## Emulation
-    # cemu
-    # dolphin-emu
+    duckstation
+    pcsx2
   ];
+
+  slippi-launcher = {
+    isoPath = "/home/${username}/ROMs/GCN/Super Smash Bros. Melee (v1.02).iso";
+    launchMeleeOnPlay = true;
+  };
 }

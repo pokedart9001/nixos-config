@@ -1,4 +1,8 @@
-{pkgs, ...}: {
+{
+  config,
+  pkgs,
+  ...
+}: {
   boot.loader = {
     efi.canTouchEfiVariables = true;
     efi.efiSysMountPoint = "/boot";
@@ -19,7 +23,7 @@
     };
   };
 
-  boot.kernelPackages = pkgs.linuxPackages;
+  boot.kernelPackages = pkgs.linuxPackages_zen;
 
   boot.initrd.systemd = {
     enable = true;

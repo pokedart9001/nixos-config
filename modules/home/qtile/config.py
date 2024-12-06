@@ -38,23 +38,17 @@ from libqtile.backend.base import Window
 from qtile_extras import widget
 from qtile_extras.widget import decorations
 
-class BspSmart(layout.Bsp):
-    @expose_command
-    def swap(self, window1: Window, window2: Window) -> None:
-        """Swap two windows"""
-        node1 = self.get_node(window1)
-        node2 = self.get_node(window2)
-
-        if node1 is not None and node2 is not None:
-            node1.client, node2.client = node2.client, node1.client
-
 @hook.subscribe.startup_once
 def autostart():
     qtile.spawn('startup')
 
 @hook.subscribe.suspend
-def autolock():
+def activate_lockscreen():
     qtile.spawn('lockscreen')
+
+@hook.subscribe.resume
+def restart_picom():
+    qtile.spawn("systemctl --user restart picom");
 
 mod = 'mod4'
 alt = 'mod1'
@@ -65,7 +59,8 @@ browser = 'floorp'
 files = 'nemo'
 
 keys = [
-    # A list of available commands that can be bound to keys can be found
+    # A list of available commands that caNintendo3ds.andKnuckles
+    # n be bound to keys can be found
     # at https://docs.qtile.org/en/latest/manual/config/lazy.html
     
     # Switch between windows
@@ -79,25 +74,23 @@ keys = [
     
     # Move windows between left/right columns or move up/down in current stack.
     # Moving out of range in Columns layout will create new column.
-    Key([mod, 'shift'], 'Left', lazy.layout.shuffle_left(), desc='Move window to the left'),
-    Key([mod, 'shift'], 'Right', lazy.layout.shuffle_right(), desc='Move window to the right'),
-    Key([mod, 'shift'], 'Down', lazy.layout.shuffle_down(), desc='Move window down'),
-    Key([mod, 'shift'], 'Up', lazy.layout.shuffle_up(), desc='Move window up'),
+    Key([mod, 'shift'], 'Left', lazy.layout.move_left(), desc='Move window to the left'),
+    Key([mod, 'shift'], 'Right', lazy.layout.move_right(), desc='Move window to the right'),
+    Key([mod, 'shift'], 'Down', lazy.layout.move_down(), desc='Move window down'),
+    Key([mod, 'shift'], 'Up', lazy.layout.move_up(), desc='Move window up'),
     
     # Grow windows. If current window is on the edge of screen and direction
     # will be to screen edge - window would shrink.
-    Key([mod, 'control'], 'Left', lazy.layout.grow_left(), desc='Grow window to the left'),
-    Key([mod, 'control'], 'Right', lazy.layout.grow_right(), desc='Grow window to the right'),
-    Key([mod, 'control'], 'Down', lazy.layout.grow_down(), desc='Grow window down'),
-    Key([mod, 'control'], 'Up', lazy.layout.grow_up(), desc='Grow window up'),
-    Key([mod], 'n', lazy.layout.normalize(), desc='Reset all window sizes'),
+    Key([mod, 'control'], 'Left', lazy.layout.grow_width(-100), desc='Grow window to the left'),
+    Key([mod, 'control'], 'Right', lazy.layout.grow_width(100), desc='Grow window to the right'),
+    Key([mod, 'control'], 'Down', lazy.layout.grow_height(-100), desc='Grow window down'),
+    Key([mod, 'control'], 'Up', lazy.layout.grow_height(100), desc='Grow window up'),
+    Key([mod], 'n', lazy.layout.reset_size(), desc='Reset all window sizes'),
     
-    # Toggle between split and unsplit sides of stack.
-    # Split = all windows displayed; Unsplit = 1 window displayed
-    # (like Max layout, but still with multiple stack panes)
-    Key([mod], 'j', lazy.layout.toggle_split(),
-        desc='Toggle between split and unsplit sides of stack',
-    ),
+    Key([mod, 'shift', 'control'], 'Left', lazy.layout.integrate_left(), desc='Integrate window to the left'),
+    Key([mod, 'shift', 'control'], 'Right', lazy.layout.integrate_right(), desc='Integrate window to the right'),
+    Key([mod, 'shift', 'control'], 'Down', lazy.layout.integrate_down(), desc='Integrate window to the down'),
+    Key([mod, 'shift', 'control'], 'Up', lazy.layout.integrate_up(), desc='Integrate window to the up'),
     
     Key([mod], 'Return', lazy.spawn(terminal), desc='Launch terminal'),
     
@@ -127,7 +120,9 @@ keys = [
     Key([mod, 'control'], 'r', lazy.reload_config(), desc='Reload the config'),
     Key([mod, 'control'], 'i', lazy.spawn('snixembed --fork'), desc='Reload systray icons'),
     Key([mod, 'control'], 'l', lazy.spawn('lockscreen'), desc='Activate lockscreen'),
+    Key([mod, 'control'], 'w', lazy.spawn('nitrogen --restore'), desc='Restore walpaper'),
     Key([mod, 'control'], 'q', lazy.shutdown(), desc='Shutdown Qtile'),
+    Key([mod, 'control'], 'Escape', lazy.restart(), desc='Restart Qtile'),
     
     Key([mod], 'r', lazy.spawn('launcher'), desc='Open an application using rofi'),
     Key([mod, 'shift'], 'r', lazy.spawn('runner'), desc='Run a command using rofi'),
@@ -142,21 +137,23 @@ layout_opts = dict(
     fontsize=14,
     margin=3,
     border_focus='cba6f7',
+    border_focus_fixed='cba6f7',
     border_normal='89b4fa',
-    border_on_single=True,
-    border_width=2
+    border_normal_fixed='89b4fa',
+    border_width=2,
+    border_width_single=2
 )
 
 layouts = [
-    BspSmart(**layout_opts),
+    layout.Plasma(**layout_opts),
     layout.Max(**layout_opts)
 ]
 
 group_opts = [
-    { 'name': '1', 'label' : '󰆍', 'spawn': f'{terminal} --hold nitch' },
+    { 'name': '1', 'label' : '󰆍', 'spawn': [f'{terminal} --hold nitch', 'codium /home/nlevitt/nixos-config'], 'matches': [Match(wm_class='vscodium')] },
     { 'name': '2', 'label' : '󰙯', 'spawn': discord, 'matches': [Match(wm_class='vesktop')] },
     { 'name': '3', 'label' : '󰈹', 'spawn': browser, 'matches': [Match(wm_class='floorp')], 'layout': 'max', 'layout_opts': layout_opts },
-    { 'name': '4', 'label' : '󰓓', 'spawn': 'steam', 'matches': [Match(title='Steam')] },
+    { 'name': '4', 'label' : '󰓓', 'spawn': 'steam', 'matches': [Match(wm_class='steam')] },
 ]
 group_opts.extend([{ 'name': str(i) } for i in range(len(group_opts) + 1, 10)])
 

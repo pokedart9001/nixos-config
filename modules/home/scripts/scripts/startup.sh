@@ -2,7 +2,6 @@
 
 pkill blueman-applet
 pkill nm-applet
-ibus exit
 
 xrandr --output HDMI-0 --mode 1920x1080 --rate 75
 snixembed --fork

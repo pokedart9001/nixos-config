@@ -22,8 +22,15 @@
 
   nixpkgs = {
     config.allowUnfree = true;
+    config.permittedInsecurePackages = [
+      "dotnet-runtime-wrapped-7.0.20"
+      "dotnet-runtime-7.0.20"
+      "dotnet-sdk-wrapped-7.0.410"
+      "dotnet-sdk-7.0.410"
+    ];
     overlays = [
-      inputs.nur.overlay
+      inputs.nur.overlays.default
+      inputs.qtile.overlays.default
       unstable-overlay
     ];
   };
