@@ -1,7 +1,6 @@
 {
   pkgs,
-  config,
-  inputs,
+  username,
   ...
 }: {
   home.packages = with pkgs; [
@@ -27,8 +26,62 @@
     gzdoom
     crispy-doom
 
+    ## Osu!
+    osu-lazer-bin
+
     ## Emulation
-    # cemu
-    # dolphin-emu
+    duckstation
+    pcsx2
+
+    (pkgs.stdenv.mkDerivation rec {
+      pname = "sgdboop";
+      version = "1.3.1";
+
+      src = fetchFromGitHub {
+        owner = "SteamGridDB";
+        repo = "SGDBoop";
+        tag = "v${version}";
+        hash = "sha256-FpVQQo2N/qV+cFhYZ1FVm+xlPHSVMH4L+irnQEMlUQs=";
+      };
+
+      makeFlags = [
+        "FLATPAK_ID=fake"
+      ];
+
+      postPatch = ''
+        substituteInPlace Makefile \
+              --replace-fail "/app/" "$out/"
+      '';
+
+      postInstall = ''
+        rm -r "$out/share/metainfo"
+      '';
+
+      nativeBuildInputs = with pkgs; [
+        pkg-config
+      ];
+
+      buildInputs = with pkgs; [
+        curl
+        gtk3
+      ];
+
+      meta = {
+        description = "Applying custom artwork to Steam, using SteamGridDB";
+        homepage = "https://github.com/SteamGridDB/SGDBoop/";
+        license = lib.licenses.zlib;
+        maintainers = with lib.maintainers; [
+          saturn745
+          fazzi
+        ];
+        mainProgram = "SGDBoop";
+        platforms = lib.platforms.linux;
+      };
+    })
   ];
+
+  slippi-launcher = {
+    isoPath = "/home/${username}/ROMs/GCN/Super Smash Bros. Melee (v1.02).iso";
+    launchMeleeOnPlay = true;
+  };
 }
