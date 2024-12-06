@@ -1,41 +1,45 @@
 {
-  config,
-  pkgs,
-  inputs,
-  ...
+    config,
+    pkgs,
+    ...
 }: {
-  hardware = {
-    opengl = {
-      enable = true;
-      driSupport = true;
-      driSupport32Bit = true;
+    hardware = {
+        graphics = {
+            enable = true;
 
-      extraPackages = with pkgs; [
-        nvidia-vaapi-driver
-      ];
+            extraPackages = with pkgs; [
+                nvidia-vaapi-driver
+            ];
+        };
+
+        nvidia = {
+            open = true;
+
+            modesetting.enable = true;
+            powerManagement.enable = true;
+
+            nvidiaSettings = true;
+            nvidiaPersistenced = true;
+
+            package = config.boot.kernelPackages.nvidiaPackages.stable;
+        };
+
+        bluetooth = {
+            enable = true;
+            powerOnBoot = true;
+        };
     };
 
-    nvidia = {
-      open = false;
+    hardware.enableRedistributableFirmware = true;
 
-      modesetting.enable = true;
-      powerManagement.enable = false;
-
-      nvidiaSettings = true;
-      nvidiaPersistenced = true;
-
-      package = config.boot.kernelPackages.nvidiaPackages.stable;
+    hardware.xpadneo.enable = true;
+    environment.variables = {
+        SDL_JOYSTICK_HIDAPI = 0;
     };
 
-    bluetooth = {
-      enable = true;
-      powerOnBoot = true;
-    };
-  };
+    hardware.steam-hardware.enable = true;
+    hardware.cpu.amd.updateMicrocode = true;
+    hardware.keyboard.qmk.enable = true;
 
-  hardware.enableRedistributableFirmware = true;
-  hardware.xpadneo.enable = true;
-  hardware.cpu.amd.updateMicrocode = true;
-
-  powerManagement.cpuFreqGovernor = "performance";
+    powerManagement.cpuFreqGovernor = "performance";
 }

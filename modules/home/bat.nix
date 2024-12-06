@@ -1,10 +1,9 @@
 {inputs, ...}: {
-  programs.bat = {
-    enable = true;
-    catppuccin.enable = true;
+    programs.bat = {
+        enable = true;
 
-    config = {
-      pager = "less -FR";
+        config = {
+            pager = "less -FR";
+        };
     };
-  };
 }

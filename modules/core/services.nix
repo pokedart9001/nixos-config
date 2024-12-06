@@ -1,45 +1,78 @@
-{pkgs, ...}: {
-  services = {
-    gvfs.enable = true;
-    gnome.gnome-keyring.enable = true;
-    dbus.enable = true;
-    blueman.enable = true;
+{
+    config,
+    pkgs,
+    username,
+    ...
+}: {
+    services = {
+        gvfs.enable = true;
+        gnome.gnome-keyring.enable = true;
+        dbus.enable = true;
+        blueman.enable = true;
 
-    libinput.enable = true;
-    displayManager.defaultSession = "none+qtile";
+        logind = {
+            powerKey = "suspend";
+            powerKeyLongPress = "poweroff";
+        };
 
-    picom = {
-      enable = true;
-      package = pkgs.unstable.picom;
+        ollama = {
+            enable = true;
+            package = pkgs.ollama;
+            acceleration = "cuda";
+        };
+        open-webui = {
+            enable = true;
+            package = pkgs.open-webui;
+            port = 11111;
+        };
 
-      vSync = true;
-      backend = "glx";
+        syncthing = {
+            enable = true;
+            user = username;
+            dataDir = "/home/${username}";
 
-      settings = {
-        fading = true;
-        "fade-in-step" = 0.07;
-        "fade-out-step" = 0.07;
+            overrideFolders = false;
+            overrideDevices = false;
+        };
 
-        blur.method = "dual_kawase";
-        blur.strength = 2;
-
-        "corner-radius" = 10;
-        "blur-background-exclude" = [
-          "window_type = 'dock'"
-          "window_type = 'desktop'"
-          "_GTK_FRAME_EXTENTS@:c"
-          "class_g = 'Chromium'"
-          "class_g = 'Discord'"
-          "class_g = 'Dunst'"
-          "class_g = 'Peek'"
-          "class_g *?= 'escrotum'"
-          "QTILE_INTERNAL:32c = 1"
+        libinput.enable = true;
+        udev.packages = with pkgs; [
+            via
         ];
 
-        "rounded-corners-exclude" = [
-          "class_g *?= 'escrotum'"
-        ];
-      };
+        displayManager = {
+            sddm = {
+                enable = true;
+                wayland.enable = true;
+
+                package = pkgs.kdePackages.sddm;
+                theme = "catppuccin-mocha";
+
+                settings = {
+                    Theme = let
+                        user-settings = config.home-manager.users.${username};
+                    in {
+                        CursorTheme = user-settings.home.pointerCursor.name;
+                        CursorSize = user-settings.home.pointerCursor.size;
+                    };
+                };
+
+                autoLogin.relogin = true;
+            };
+
+            defaultSession = "hyprland";
+            autoLogin.user = username;
+        };
     };
-  };
+
+    environment.systemPackages = with pkgs; [
+        (
+            catppuccin-sddm.override {
+                font = "JetBrainsMono Nerd Font";
+                fontSize = "11";
+                background = "${../home/xdg/wallpapers/catppuccin/astronaut.png}";
+                loginBackground = true;
+            }
+        )
+    ];
 }

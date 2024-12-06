@@ -1,5 +1,7 @@
-{pkgs, ...}: let
-  script-names = builtins.map (x: builtins.replaceStrings [".sh"] [""] x) (builtins.attrNames (builtins.readDir ./scripts));
-in {
-  home.packages = builtins.map (name: pkgs.writeScriptBin name (builtins.readFile ./scripts/${name}.sh)) script-names;
+{pkgs, ...}: {
+    home.packages =
+        builtins.readDir ./scripts
+        |> builtins.attrNames
+        |> builtins.map (fileName: builtins.replaceStrings [".sh"] [""] fileName)
+        |> builtins.map (scriptName: builtins.readFile ./scripts/${scriptName}.sh |> pkgs.writeScriptBin scriptName);
 }

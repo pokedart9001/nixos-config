@@ -1,57 +1,76 @@
 {
-  description = "pokedart9001's NixOS configuration";
+    description = "pokedart9001's NixOS configuration";
 
-  inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.05";
-    nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
-    nur.url = "github:nix-community/NUR";
+    inputs = {
+        nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+        nur.url = "github:nix-community/NUR";
 
-    nix-gaming.url = "github:fufexan/nix-gaming";
+        nix-gaming.url = "github:fufexan/nix-gaming";
 
-    home-manager = {
-      url = "github:nix-community/home-manager/release-24.05";
-      inputs.nixpkgs.follows = "nixpkgs";
+        slippi = {
+            url = "github:lytedev/slippi-nix";
+            inputs = {
+                nixpkgs.follows = "nixpkgs";
+                home-manager.follows = "home-manager";
+            };
+        };
+
+        home-manager = {
+            url = "github:nix-community/home-manager";
+            inputs.nixpkgs.follows = "nixpkgs";
+        };
+
+        qtile = {
+            url = "github:qtile/qtile/v0.31.0";
+            inputs.nixpkgs.follows = "nixpkgs";
+        };
+
+        nvf = {
+            url = "github:notashelf/nvf";
+            inputs.nixpkgs.follows = "nixpkgs";
+        };
+        nil.url = "github:oxalica/nil";
+
+        grim-hyprland.url = "github:eriedaberrie/grim-hyprland";
+
+        catppuccin.url = "github:catppuccin/nix";
     };
 
-    catppuccin.url = "github:catppuccin/nix";
-  };
+    outputs = {
+        nixpkgs,
+        self,
+        ...
+    } @ inputs: let
+        username = "nlevitt";
+        description = "Noah";
+        system = "x86_64-linux";
 
-  outputs = {
-    nixpkgs,
-    nixpkgs-unstable,
-    self,
-    ...
-  } @ inputs: let
-    username = "nlevitt";
-    system = "x86_64-linux";
-    flakeDir = "/home/${username}/nixos-config";
-
-    forAllSystems = nixpkgs.lib.genAttrs [system];
-    nixpkgsFor = forAllSystems (system: import nixpkgs {inherit system;});
-  in {
-    nixosConfigurations = import ./modules/core/default.nix {
-      inherit self nixpkgs nixpkgs-unstable inputs username system flakeDir;
-    };
-
-    packages = forAllSystems (system: let
-      pkgs = nixpkgsFor.${system};
+        forAllSystems = nixpkgs.lib.genAttrs [system];
+        nixpkgsFor = forAllSystems (system: import nixpkgs {inherit system;});
     in {
-      default = self.packages.${system}.install;
+        nixosConfigurations = import ./modules/core/default.nix {
+            inherit self nixpkgs inputs username description system;
+        };
 
-      install = pkgs.writeShellApplication {
-        name = "install";
-        runtimeInputs = with pkgs; [git nh];
-        text = builtins.readFile ./install.sh;
-      };
-    });
+        packages = forAllSystems (system: let
+            pkgs = nixpkgsFor.${system};
+        in {
+            default = self.packages.${system}.install;
 
-    apps = forAllSystems (system: {
-      default = self.apps.${system}.install;
+            install = pkgs.writeShellApplication {
+                name = "install";
+                runtimeInputs = with pkgs; [git nh];
+                text = builtins.readFile ./install.sh;
+            };
+        });
 
-      install = {
-        type = "app";
-        program = "${self.packages.${system}.install}/bin/install";
-      };
-    });
-  };
+        apps = forAllSystems (system: {
+            default = self.apps.${system}.install;
+
+            install = {
+                type = "app";
+                program = "${self.packages.${system}.install}/bin/install";
+            };
+        });
+    };
 }

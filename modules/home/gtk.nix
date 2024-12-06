@@ -1,51 +1,46 @@
-{
-  config,
-  pkgs,
-  ...
-}: {
-  fonts.fontconfig.enable = true;
-  home.packages = with pkgs; [
-    nerdfonts
-    (nerdfonts.override {fonts = ["JetBrainsMono"];})
-    twemoji-color-font
-    noto-fonts-emoji
-  ];
+{pkgs, ...}: {
+    fonts.fontconfig.enable = true;
+    home.packages = with pkgs; [
+        nerd-fonts.iosevka
+        nerd-fonts.jetbrains-mono
+        nerd-fonts.symbols-only
+        twemoji-color-font
+        noto-fonts-emoji
+        noto-fonts-cjk-sans
+    ];
 
-  catppuccin.pointerCursor = {
-    enable = true;
-    accent = "dark";
-  };
+    home.pointerCursor = {
+        name = "catppuccin-mocha-dark-cursors";
+        package =
+            (pkgs.catppuccin-cursors.overrideAttrs rec {
+                version = "0.4.0";
+                src = pkgs.fetchFromGitHub {
+                    owner = "catppuccin";
+                    repo = "cursors";
+                    rev = "v${version}";
+                    hash = "sha256-VxLwZkZdV1xH4jeqtszqSnhNrgF3uamEXBLPKIc4lXE=";
+                };
 
-  home.pointerCursor.size = 22;
-  home.pointerCursor.gtk.enable = true;
+                outputs = ["mochaDark" "out"];
+            })
+      .mochaDark;
 
-  gtk = {
-    enable = true;
+        size = 22;
 
-    catppuccin = {
-      enable = true;
-      accent = "lavender";
-
-      icon.enable = true;
-      icon.accent = "lavender";
+        gtk.enable = true;
     };
 
-    font = {
-      name = "JetBrainsMono Nerd Font";
-      size = 11;
-    };
-  };
-
-  qt = {
-    enable = true;
-    platformTheme.name = "kvantum";
-
-    style = {
-      name = "kvantum";
-      catppuccin = {
+    gtk = {
         enable = true;
-        accent = "lavender";
-      };
+
+        font = {
+            name = "JetBrainsMono Nerd Font";
+            size = 11;
+        };
     };
-  };
+
+    qt = {
+        enable = true;
+        platformTheme.name = "gtk3";
+    };
 }
