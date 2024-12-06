@@ -11,24 +11,29 @@
     noto-fonts-emoji
   ];
 
-  catppuccin.pointerCursor = {
-    enable = true;
-    accent = "dark";
-  };
+  home.pointerCursor = {
+    name = "catppuccin-mocha-dark-cursors";
+    package =
+      (pkgs.catppuccin-cursors.overrideAttrs rec {
+        version = "0.4.0";
+        src = pkgs.fetchFromGitHub {
+          owner = "catppuccin";
+          repo = "cursors";
+          rev = "v${version}";
+          hash = "sha256-VxLwZkZdV1xH4jeqtszqSnhNrgF3uamEXBLPKIc4lXE=";
+        };
 
-  home.pointerCursor.size = 22;
-  home.pointerCursor.gtk.enable = true;
+        outputs = ["mochaDark" "out"];
+      })
+      .mochaDark;
+
+    size = 22;
+
+    gtk.enable = true;
+  };
 
   gtk = {
     enable = true;
-
-    catppuccin = {
-      enable = true;
-      accent = "lavender";
-
-      icon.enable = true;
-      icon.accent = "lavender";
-    };
 
     font = {
       name = "JetBrainsMono Nerd Font";
@@ -40,12 +45,6 @@
     enable = true;
     platformTheme.name = "kvantum";
 
-    style = {
-      name = "kvantum";
-      catppuccin = {
-        enable = true;
-        accent = "lavender";
-      };
-    };
+    style.name = "kvantum";
   };
 }

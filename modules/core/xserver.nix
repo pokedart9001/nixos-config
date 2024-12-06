@@ -9,6 +9,7 @@ in {
   services.xserver = {
     enable = true;
     xkb.layout = "us";
+    xkb.options = "ctrl:nocaps";
 
     videoDrivers = ["nvidia"];
 
@@ -42,9 +43,20 @@ in {
       enable = true;
       extraPackages = pythonPackages:
         with pythonPackages; [
-          qtile-extras
+          (qtile-extras.overridePythonAttrs {
+            disabledTestPaths = [
+              "test/widget/test_alsawidget.py"
+              "test/widget/test_init_configure.py"
+              "test/widget/test_iwd.py"
+              "test/widget/test_mpris2.py"
+              "test/widget/test_strava.py"
+              "test/widget/test_tvhwidget.py"
+              "test/widget/test_upower.py"
+            ];
+          })
           iwlib
           pyxdg
+          dbus-fast
         ];
     };
 

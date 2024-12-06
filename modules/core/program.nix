@@ -1,9 +1,13 @@
 {
   pkgs,
   username,
-  flakeDir,
   ...
 }: {
+  programs.appimage = {
+    enable = true;
+    binfmt = true;
+  };
+
   programs.dconf.enable = true;
   programs.zsh.enable = true;
 
@@ -21,7 +25,6 @@
   programs.nh = {
     enable = true;
     clean.enable = true;
-    flake = /. + builtins.toPath flakeDir;
   };
 
   programs.noisetorch.enable = true;

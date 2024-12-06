@@ -1,11 +1,6 @@
 {
-  lib,
-  inputs,
-  ...
-}: {
   programs.starship = {
     enable = true;
-    catppuccin.enable = true;
 
     enableBashIntegration = true;
     enableZshIntegration = true;
