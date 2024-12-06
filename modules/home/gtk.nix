@@ -11,13 +11,23 @@
     noto-fonts-emoji
   ];
 
-  catppuccin.pointerCursor = {
-    enable = true;
-    accent = "dark";
-  };
+  home.pointerCursor = {
+    name = "catppuccin-mocha-dark-cursors";
+    package =
+      (pkgs.catppuccin-cursors.overrideAttrs (finalAttrs: previousAttrs: {
+        src = pkgs.fetchFromGitHub {
+          owner = "catppuccin";
+          repo = "cursors";
+          rev = "v0.4.0";
+          hash = "sha256-VxLwZkZdV1xH4jeqtszqSnhNrgF3uamEXBLPKIc4lXE=";
+        };
+      }))
+      .mochaDark;
 
-  home.pointerCursor.size = 22;
-  home.pointerCursor.gtk.enable = true;
+    size = 22;
+
+    gtk.enable = true;
+  };
 
   gtk = {
     enable = true;
