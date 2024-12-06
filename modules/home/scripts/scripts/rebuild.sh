@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # cd to config dir
-pushd $FLAKE
+pushd ~/nixos-config
 
 # Autoformat nix files
 alejandra . >/dev/null

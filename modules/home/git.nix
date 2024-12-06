@@ -2,7 +2,6 @@
   config,
   pkgs,
   username,
-  flakeDir,
   ...
 }: {
   programs.git = {
@@ -16,7 +15,7 @@
       user.email = "noahhlevitt@gmail.com";
       init.defaultBranch = "main";
       credential.helper = "store";
-      safe.directory = flakeDir;
+      safe.directory = "~/nixos-config";
     };
   };
 

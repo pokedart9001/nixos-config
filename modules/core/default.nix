@@ -5,7 +5,6 @@
   self,
   username,
   system,
-  flakeDir,
   ...
 }: let
   pkgs = import nixpkgs {
@@ -25,7 +24,7 @@
 in {
   nixos = lib.nixosSystem {
     specialArgs = {
-      inherit self inputs username system flakeDir unstable-overlay;
+      inherit self inputs username system unstable-overlay;
       channels = {inherit nixpkgs nixpkgs-unstable;};
     };
     modules = [

@@ -401,6 +401,8 @@ screens = [
                         'Button2': lazy.spawn('noisetorch'),
                         'Button3': lazy.spawn('pavucontrol')
                     },
+                    get_volume_command='pamixer --get-volume-human',
+                    mute_command='pamixer -t',
                     **default_decorations
                 ),
                 widget.Spacer(length=8),

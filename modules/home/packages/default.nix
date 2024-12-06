@@ -23,10 +23,10 @@
     tgpt
     todo # cli todo list
     toipe # typing test in the terminal
-    cinnamon.nemo-with-extensions # file manager
+    nemo-with-extensions # file manager
     yazi # terminal file manager
     ytfzf # cli tool for scraping and watching youtube
-    gnome.zenity
+    zenity
 
     # C / C++
     gcc
@@ -38,7 +38,7 @@
     diskonaut
     escrotum # cli screenshot utility
     exfat
-    gnome.gnome-disk-utility # partition manager
+    gnome-disk-utility # partition manager
     ffmpeg
     imv # image viewer
     jq
