@@ -1,0 +1,91 @@
+diff --git a/include/picom/backend.h b/include/picom/backend.h
+index ab0757a7..ce4f6ed7 100644
+--- a/include/picom/backend.h
++++ b/include/picom/backend.h
+@@ -184,6 +184,7 @@ struct backend_operations {
+ 	/// Initialize the backend, prepare for rendering to the target window.
+ 	backend_t *(*init)(session_t *, xcb_window_t) __attribute__((nonnull(1)));
+ 	void (*deinit)(backend_t *backend_data) __attribute__((nonnull(1)));
++	bool (*requires_reinit)(backend_t *backend_data) __attribute__((nonnull(1)));
+
+ 	/// Called when rendering will be stopped for an unknown amount of
+ 	/// time (e.g. when screen is unredirected). Free some resources.
+diff --git a/src/backend/gl/gl_common.h b/src/backend/gl/gl_common.h
+index 942b34b3..52be1b74 100644
+--- a/src/backend/gl/gl_common.h
++++ b/src/backend/gl/gl_common.h
+@@ -257,9 +262,8 @@ static inline const char *gl_get_err_str(GLenum err) {
+  * http://blog.nobel-joergensen.com/2013/01/29/debugging-opengl-using-glgeterror/
+  */
+ static inline void gl_check_err_(const char *func, int line) {
+-	GLenum err = GL_NO_ERROR;
+-
+-	while (GL_NO_ERROR != (err = glGetError())) {
++	GLenum err = glGetError();
++	if (err != GL_NO_ERROR) {
+ 		const char *errtext = gl_get_err_str(err);
+ 		if (errtext) {
+ 			log_printf(tls_logger, LOG_LEVEL_ERROR, func,
+diff --git a/src/backend/gl/glx.c b/src/backend/gl/glx.c
+index 7105069f..c685b9b0 100644
+--- a/src/backend/gl/glx.c
++++ b/src/backend/gl/glx.c
+@@ -516,6 +516,20 @@ static void glx_version(struct backend_base * /*base*/, uint64_t *major, uint64_
+ 	*minor = PICOM_BACKEND_GLX_MINOR;
+ }
+
++static bool glx_requires_reinit(struct backend_base *base) {
++	auto data = (struct gl_data *)base;
++	if (!data->has_robustness) {
++		return false;
++	}
++	GLenum reset_status = glGetGraphicsResetStatusARB();
++	GLenum error = glGetError();
++	log_debug("GL device state %d; GL error %d", reset_status, error);
++	if (reset_status != GL_NO_ERROR) {
++		log_debug("GL context possibly lost");
++	}
++	return reset_status != GL_NO_ERROR;
++}
++
+ const struct backend_operations glx_ops = {
+     .apply_alpha = gl_apply_alpha,
+     .back_buffer = gl_back_buffer,
+@@ -535,6 +549,7 @@ const struct backend_operations glx_ops = {
+
+     .init = glx_init,
+     .deinit = glx_deinit,
++    .requires_reinit = glx_requires_reinit,
+     .root_change = gl_root_change,
+     .prepare = gl_prepare,
+     .buffer_age = glx_buffer_age,
+diff --git a/src/picom.c b/src/picom.c
+index a6ce8672..f5026910 100644
+--- a/src/picom.c
++++ b/src/picom.c
+@@ -1562,6 +1567,25 @@ static void draw_callback_impl(EV_P_ session_t *ps, int revents attr_unused) {
+ 	assert(!ps->backend_busy);
+ 	assert(ps->render_queued);
+
++	log_trace("draw_callback_impl called");
++	if (ps->backend_data != NULL &&
++	    ps->backend_data->ops.requires_reinit(ps->backend_data)) {
++		log_debug("Backend requires re-initialization");
++		log_debug("re-initialization started");
++		destroy_backend(ps);
++		if (!initialize_backend(ps)) {
++			log_fatal("Backend requires re-initialization, but "
++			          "initialization failed");
++			ps->quit = true;
++			/* TODO(yshui) only event handlers should request
++			 * ev_break, otherwise it's too hard to keep track of what
++			 * can break the event loop */
++			ev_break(ps->loop, EVBREAK_ALL);
++			return;
++		}
++		log_debug("re-initialization complete");
++	}
++
+ 	struct timespec now;
+ 	int64_t draw_callback_enter_us;
+ 	clock_gettime(CLOCK_MONOTONIC, &now);

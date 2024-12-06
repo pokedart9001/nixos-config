@@ -10,7 +10,7 @@ if [ $? != 0 ]; then
     exit 1;
 fi
 
-if kitty --title 'float_kitty' ffmpeg -i "$IN_VIDEO" -vn "$OUT_AUDIO"; then
+if kitty --title 'extract-audio-ffmpeg' ffmpeg -i "$IN_VIDEO" -vn "$OUT_AUDIO"; then
     notify-send -e "Audio successfully extracted!" --icon=applications-multimedia
 else
     notify-send -e "Audio extraction failed." --icon=dialog-error

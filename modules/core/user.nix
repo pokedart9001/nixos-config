@@ -1,24 +1,23 @@
 {
   pkgs,
   inputs,
+  system,
   username,
-  flakeDir,
+  description,
   ...
-}: let
-  packages = with pkgs; [
-    fish
-  ];
-in {
+}: {
   imports = [inputs.home-manager.nixosModules.home-manager];
 
   home-manager = {
     useUserPackages = true;
     useGlobalPkgs = true;
-    extraSpecialArgs = {inherit inputs username flakeDir;};
+    extraSpecialArgs = {inherit inputs username system;};
     users.${username} = {
       imports = [
         (import ./../home)
-        inputs.catppuccin.homeManagerModules.catppuccin
+        inputs.catppuccin.homeModules.catppuccin
+        inputs.slippi.homeManagerModules.default
+        inputs.nvf.homeManagerModules.default
       ];
       home.username = "${username}";
       home.homeDirectory = "/home/${username}";
@@ -29,7 +28,7 @@ in {
 
   users.users.${username} = {
     isNormalUser = true;
-    description = "${username}";
+    description = "${description}";
     extraGroups = ["networkmanager" "wheel"];
     shell = pkgs.zsh;
   };

@@ -1,8 +1,6 @@
 {
-  hostname,
   config,
-  pkgs,
-  flakeDir,
+  lib,
   ...
 }: {
   programs.zsh = {
@@ -18,7 +16,7 @@
       enable = true;
       plugins = ["git" "fzf"];
     };
-    initExtraFirst = ''
+    initContent = lib.mkBefore ''
       DISABLE_MAGIC_FUNCTIONS=true
       export "MICRO_TRUECOLOR=1"
     '';
@@ -39,9 +37,9 @@
       tree = "eza --icons --tree --group-directories-first";
 
       # Nixos
-      cdnix = "cd ${flakeDir}";
-      nix-edit = "codium ${flakeDir}";
-      nix-flake-update = "sudo nix flake update ${flakeDir}#";
+      cdnix = "cd ~/nixos-config";
+      nix-edit = "kitty --detach -d ~/nixos-config nvim";
+      nix-flake-update = "sudo nix flake update --flake ~/nixos-config#";
 
       # Git
       ga = "git add";
