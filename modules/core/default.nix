@@ -4,8 +4,8 @@
   nixpkgs-unstable,
   self,
   username,
+  description,
   system,
-  flakeDir,
   ...
 }: let
   pkgs = import nixpkgs {
@@ -25,11 +25,12 @@
 in {
   nixos = lib.nixosSystem {
     specialArgs = {
-      inherit self inputs username system flakeDir unstable-overlay;
+      inherit self inputs username description system unstable-overlay;
       channels = {inherit nixpkgs nixpkgs-unstable;};
     };
     modules = [
       inputs.catppuccin.nixosModules.catppuccin
+      inputs.slippi.nixosModules.default
       (import ./bootloader.nix)
       (import ./hardware.nix)
       (import ./xserver.nix)

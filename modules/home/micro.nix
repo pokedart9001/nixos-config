@@ -1,7 +1,6 @@
-{pkgs, ...}: {
+{
   programs.micro = {
     enable = true;
-    catppuccin.enable = true;
 
     settings = {
       "*.nix" = {"tabsize" = 2;};
