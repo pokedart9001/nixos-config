@@ -58,7 +58,7 @@
         openssl
         pamixer # pulseaudio command line mixer
         parallel
-        pavucontrol # pulseaudio volume controle (GUI)
+        pwvucontrol # pulseaudio volume controle (GUI)
         pciutils
         playerctl # controller for media players
         plocate

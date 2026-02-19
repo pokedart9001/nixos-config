@@ -92,7 +92,7 @@ window#waybar.empty #window {
 #custom-weather,
 #cpu,
 #disk,
-#pulseaudio,
+#wireplumber,
 #network,
 #clock {
     padding: 0 8px;
@@ -127,7 +127,7 @@ window#waybar.empty #window {
     color: @green;
 }
 
-#pulseaudio {
+#wireplumber {
     color: @teal;
 }
 

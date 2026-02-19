@@ -20,7 +20,7 @@ in {
         "cpu"
         "memory"
         "disk"
-        "pulseaudio"
+        "wireplumber"
         "network"
         "clock"
         "custom/power"
@@ -116,7 +116,7 @@ in {
         on-click = launch-floating-btop;
     };
 
-    pulseaudio = {
+    wireplumber = {
         format = "{icon} {volume}%";
         format-bluetooth = "󰂰 {volume}%";
         format-bluetooth-muted = "<span size='large'>󰗿</span><span size='xx-small'> </span>";
@@ -131,7 +131,7 @@ in {
             default = ["" "" "<sub> </sub>"];
         };
         on-click = "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle";
-        on-click-right = "pavucontrol";
+        on-click-right = "pwvucontrol";
         on-click-middle = "easyeffects";
         ignored-sinks = [
             "Starship/Matisse HD Audio Controller Digital Stereo (IEC958)"

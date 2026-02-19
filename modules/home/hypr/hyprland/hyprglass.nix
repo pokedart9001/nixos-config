@@ -9,10 +9,10 @@ hyprlandPlugins.mkHyprlandPlugin {
     version = "0.1";
 
     src = fetchFromGitHub {
-        owner = "Bartholomew125";
-        repo = "liquid-glass-plugin-hyprpm";
-        rev = "main";
-        hash = "sha256-I7l7fE7jhzSpHZQW3i9zD2IMovGLaN0/qW8rtXvrwIM=";
+        owner = "purple-lines";
+        repo = "Hypr-GlassWindow-fix";
+        rev = "master";
+        hash = "sha256-lI7q32bxIAyIZOIZUrzM9V2iTR++258JaZ9A9AOYaW0=";
     };
 
     # any nativeBuildInputs required for the plugin
@@ -22,19 +22,19 @@ hyprlandPlugins.mkHyprlandPlugin {
     # by default, Hyprland and its dependencies are included
     buildInputs = [];
 
-    dontUseCmakeConfigure = true;
     installPhase = ''
         runHook preInstall
 
         mkdir -p $out/lib
-        mv liquid-glass.so $out/lib/libhypr-liquid-glass.so
+        mv glasswindow.so $out/lib/libglasswindow.so
 
         runHook postInstall
     '';
 
     meta = {
-        homepage = "https://github.com/Bartholomew125/liquid-glass-plugin-hyprpm";
-        description = "Apple-style Liquid Glass effect for Hyprland windows with refraction, chromatic aberration, and Fresnel highlights";
+        homepage = "https://github.com/purple-lines/Hypr-GlassWindow-fix";
+        description = "Glass-like Hyprland plugin";
+        license = lib.licenses.mit;
         platforms = lib.platforms.linux;
     };
 }
