@@ -14,7 +14,7 @@
             modesetting.enable = true;
             powerManagement.enable = true;
 
-            nvidiaPersistenced = true;
+            nvidiaPersistenced = false; # Currently broken
         };
 
         bluetooth = {

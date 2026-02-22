@@ -59,16 +59,19 @@
         };
 
         iconTheme = {
-            name = "Papirus-Dark";
-            package = pkgs.catppuccin-papirus-folders.override {
-                flavor = "mocha";
-                accent = "lavender";
+            name = "Colloid-Catppuccin-Dark";
+            package = pkgs.colloid-icon-theme.override {
+                schemeVariants = ["catppuccin"];
             };
         };
 
         font = {
             name = "Inter";
             size = 9.5;
+        };
+
+        gtk3.extraConfig = {
+            gtk-menu-images = 1;
         };
     };
 

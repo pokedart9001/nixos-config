@@ -13,7 +13,7 @@ git diff --staged -U0 "*"
 sudo echo "NixOS Rebuilding..."
 if nh os switch . $1; then
   # Notify success
-  notify-send -e "Build Finished" "NixOS Rebuild was successful! Configuration has been updated." --icon=system-software-update
+  notify-send -e "Build Finished" "NixOS Rebuild was successful! Configuration has been updated." --icon=system-reboot
 
   # Get current generation metadata
   current=$(nixos-rebuild list-generations | grep current)

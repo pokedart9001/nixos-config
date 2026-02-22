@@ -2,7 +2,6 @@
     imports = [
         ./browser # zen browser
         ./hypr # wayland compositor
-        ./krita # image editor
         ./nitch # system fetch tool
         ./rofi # launcher
         ./scripts # personal scripts

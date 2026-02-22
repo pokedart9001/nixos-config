@@ -27,7 +27,7 @@ in {
     ];
 
     "custom/launcher" = {
-        format = "󱄅";
+        format = "<span size='large'></span>";
         tooltip = false;
         on-click = "launcher";
         on-click-right = "waypaper --random";
@@ -41,14 +41,14 @@ in {
         format = "{icon}";
         format-icons = {
             "1" = "";
-            "2" = "";
-            "3" = "";
-            "4" = "";
+            "2" = "";
+            "3" = "";
+            "4" = "";
         };
     };
 
     tray = {
-        icon-size = 15;
+        icon-size = 13;
         spacing = 10;
     };
 
@@ -56,13 +56,13 @@ in {
         format = "{icon}";
         tooltip = false;
         format-icons = {
-            activated = "";
-            deactivated = "";
+            activated = "<span size='large'></span>";
+            deactivated = "<span size='large'></span>";
         };
     };
 
     "custom/weather" = {
-        exec = "wttrbar --ampm --nerd --fahrenheit --mph --date-format %m-%d-%Y";
+        exec = "wttrbar --ampm --nerd --fahrenheit --mph --date-format %m-%d-%Y --location $(curl -s 'http://ip-api.com/json?fields=city' | jq '.city' | tr -d '\"')";
         return-type = "json";
         format = "{}°F";
         tooltip = true;
@@ -83,14 +83,14 @@ in {
     "custom/notification" = {
         format = "{icon}";
         format-icons = {
-            notification = "";
-            none = "";
-            dnd-notification = "";
-            dnd-none = "";
-            inhibited-notification = "";
-            inhibited-none = "";
-            dnd-inhibited-notification = "";
-            dnd-inhibited-none = "";
+            notification = "<span size='large'></span>";
+            none = "<span size='large'></span>";
+            dnd-notification = "<span size='large'></span>";
+            dnd-none = "<span size='large'></span>";
+            inhibited-notification = "<span size='large'></span>";
+            inhibited-none = "<span size='large'></span>";
+            dnd-inhibited-notification = "<span size='large'></span>";
+            dnd-inhibited-none = "<span size='large'></span>";
         };
         return-type = "json";
         exec-if = "which swaync-client";
@@ -101,35 +101,23 @@ in {
     };
 
     cpu = {
-        format = " <span size='xx-small'> </span>{usage}%";
-        tooltip = false;
+        format = " {usage}%";
         on-click = launch-floating-btop;
     };
 
     memory = {
-        format = " <span size='xx-small'> </span>{}%";
+        format = " {}%";
         on-click = launch-floating-btop;
     };
 
     disk = {
-        format = " <span size='xx-small'> </span>{percentage_used}%";
+        format = " {percentage_used}%";
         on-click = launch-floating-btop;
     };
 
     wireplumber = {
-        format = "{icon} {volume}%";
-        format-bluetooth = "󰂰 {volume}%";
-        format-bluetooth-muted = "<span size='large'>󰗿</span><span size='xx-small'> </span>";
-        format-muted = "<span size='x-large'>󰝟</span><span size='xx-small'> </span>";
-        format-icons = {
-            headphone = "󰋋";
-            hands-free = "";
-            headset = "";
-            phone = "";
-            portable = "";
-            car = "";
-            default = ["" "" "<sub> </sub>"];
-        };
+        format = " {volume}%";
+        format-muted = "";
         on-click = "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle";
         on-click-right = "pwvucontrol";
         on-click-middle = "easyeffects";
@@ -142,11 +130,11 @@ in {
     };
 
     network = {
-        format-wifi = " <sub> </sub>{essid}";
-        format-ethernet = " <sub> </sub>Wired";
-        tooltip-format = " <sub> </sub>{ifname} via {gwaddr}";
-        format-linked = " <sub> </sub>{ifname} (No IP)";
-        format-disconnected = "⚠ Disconnected";
+        format-wifi = " {essid}";
+        format-ethernet = " Wired";
+        tooltip-format = " {ifname} via {gwaddr}";
+        format-linked = " {ifname} (No IP)";
+        format-disconnected = " Disconnected";
         format-alt = "{ifname} = {ipaddr}/{cidr}";
     };
 
@@ -157,13 +145,13 @@ in {
             };
         };
         timezone = "America/New_York";
-        format = " <span size='xx-small'> </span>{:%I:%M %p}";
-        tooltip-format = "<tt><small>{calendar}</small></tt>";
-        format-alt = " <span size='xx-small'> </span>{:%m-%d-%Y}";
+        format = " {:%I:%M %p}";
+        tooltip-format = "<tt>{calendar}</tt>";
+        format-alt = " {:%m-%d-%Y}";
     };
 
     "custom/power" = {
-        format = "⏻";
+        format = "<span size='large'>⏻</span>";
         tooltip = false;
         on-click = "wlogout";
     };
